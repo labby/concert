@@ -72,65 +72,62 @@ if(function_exists('edit_module_css')) {
 }
 ?>
 
-<form name="edit" action="<?php echo LEPTON_URL; ?>/modules/concert/save_set.php" method="post" style="margin: 0;">
-<input type="hidden" name="page_id" value="<?php echo $page_id; ?>">
-<input type="hidden" name="section_id" value="<?php echo $section_id; ?>">
+<form id="cal_edit" name="edit" action="<?php echo LEPTON_URL; ?>/modules/concert/save_set.php" method="post">
+	<input type="hidden" name="page_id" value="<?php echo $page_id; ?>">
+	<input type="hidden" name="section_id" value="<?php echo $section_id; ?>">
 
-<table class="row_a" cellpadding="2" cellspacing="0" border="0" align="center" width="100%">
+<table class="cal">
 	<tr>
-		<td width="40%">
-			<?php echo $MOD_CONCERT['DISPDETAILEDVIEW']; ?> :
+		<td class="cal_left">
+		
 		</td>
-		<td width="60%">
-			<input type="radio" name="detailed_view" id="detailed_view1" value="1" <?php if($fetch_page_content['detailed_view'] == "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('detailed_view1').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['YES']; ?></font>
-			<input type="radio" name="detailed_view" id="detailed_viewt0" value="0" <?php if($fetch_page_content['detailed_view'] != "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('detailed_view0').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['NO']; ?></font>
+		<td class="cal_right">
+			<input type="hidden" name="detailed_view" value="0" />
+			<input type="checkbox" name="detailed_view" id="detailed_view1" value="1" <?php if($fetch_page_content['detailed_view'] == "1") { echo "checked"; } ?> />
+			&nbsp;<label for="detailed_view1"><?php echo $MOD_CONCERT['DISPDETAILEDVIEW']; ?><label>
 		</td>
 	</tr>
 	<tr>
-		<td width="40%">
-			<?php echo $MOD_CONCERT['DISPUPCOMINGVIEW']; ?> :
+		<td class="cal_left">
+			
 		</td>
-		<td width="60%">
-			<input type="radio" name="upcoming_view" id="upcoming_view1" value="1" <?php if($fetch_page_content['upcoming_view'] == "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('upcoming_view1').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['YES']; ?></font>
-			<input type="radio" name="upcoming_view" id="upcoming_view0" value="0" <?php if($fetch_page_content['upcoming_view'] == "0") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('upcoming_view0').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['NO']; ?></font>
+		<td class="cal_right">
+			<input type="hidden" name="upcoming_view" value="0" />
+			<input type="checkbox" name="upcoming_view" id="upcoming_view1" value="1" <?php if($fetch_page_content['upcoming_view'] == "1") { echo "checked"; } ?> />
+			&nbsp;<label for="upcoming_view1"><?php echo $MOD_CONCERT['DISPUPCOMINGVIEW']; ?><label>
 		</td>
 	</tr>
     <tr>
-		<td width="40%">
+		<td class="cal_left">
 			<?php echo $MOD_CONCERT['UPCOMINGNUM']; ?> :
 		</td>
-		<td width="60%">
+		<td class="cal_right">
 			<input type="text" name="upcoming_num" id="upcoming_num" value="<?php echo $fetch_page_content['upcoming_num']; ?>" />
 		</td>
 	</tr>
 	<tr>
-		<td width="40%">
-			<?php echo $MOD_CONCERT['DISPPREVIOUSVIEW']; ?> :
+		<td class="cal_left">
+			
 		</td>
-        <td width="60%">
-			<input type="radio" name="previous_view" id="previous_view1" value="1" <?php if($fetch_page_content['previous_view'] == "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('previous_view1').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['YES']; ?></font>
-			<input type="radio" name="previous_view" id="previous_view0" value="0" <?php if($fetch_page_content['previous_view'] == "0") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('previous_view0').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['NO']; ?></font>
+        <td class="cal_right">
+			<input type="hidden" name="previous_view" value="0" />
+			<input type="checkbox" name="previous_view" id="previous_view1" value="1" <?php if($fetch_page_content['previous_view'] == "1") { echo "checked"; } ?> />
+			&nbsp;<label for="previous_view1"><?php echo $MOD_CONCERT['DISPPREVIOUSVIEW']; ?><label>
 		</td>
 	</tr>
     <tr>
-		<td width="40%">
+		<td class="cal_left">
 			<?php echo $MOD_CONCERT['PREVIOUSNUM']; ?> :
 		</td>
-		<td width="60%">
+		<td class="cal_right">
 			<input type="text" name="previous_num" id="previous_num" value="<?php echo $fetch_page_content['previous_num']; ?>" />
 		</td>
 	</tr>
 	<tr>
-		<td width="40%">
+		<td class="cal_left">
 			<?php echo $TEXT['DATE_FORMAT']; ?> :
 		</td>
-		<td width="60%">
+		<td class="cal_right">
 			<select name="dateview_form">
 			<option value ="0" <?php if ($fetch_page_content['dateview'] == 0) { echo "selected"; } ?> ><?php echo $MOD_CONCERT['YEAR']."-".$MOD_CONCERT['MONTH']."-".$MOD_CONCERT['DAY']; ?></option>
 			<option value ="1" <?php if ($fetch_page_content['dateview'] == 1) { echo "selected"; } ?> ><?php echo $MOD_CONCERT['DAY'].".".$MOD_CONCERT['MONTH'].".".$MOD_CONCERT['YEAR']; ?></option>
@@ -139,45 +136,48 @@ if(function_exists('edit_module_css')) {
 		</td>
 	</tr>
     <tr>
-    	<td><?php echo $MOD_CONCERT['LINKDATE']; ?> :</td>
-        <td>
-        	<input type="radio" name="date_link" id="date_link1" value="1" <?php if($fetch_page_content['date_link'] == "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('date_link1').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['YES']; ?></font>
-			<input type="radio" name="date_link" id="date_link0" value="0" <?php if($fetch_page_content['date_link'] != "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('date_link0').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['NO']; ?></font>
+    	<td class="cal_left">
+    	
+    	</td>
+        <td class="cal_right">
+			<input type="hidden" name="date_link" value="0" />
+			<input type="checkbox" name="date_link" id="date_link1" value="1" <?php if($fetch_page_content['date_link'] == "1") { echo "checked"; } ?> />
+			&nbsp;<label for="date_link1"><?php echo $MOD_CONCERT['LINKDATE']; ?><label>
         </td>
     </tr>
     <tr>
-    	<td> <?php echo $MOD_CONCERT['TOGGLE']; ?> :</td>
-        <td>
-        	<input type="radio" name="toggle" id="toggle1" value="1" <?php if($fetch_page_content['toggle'] == "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('toggle1').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['YES']; ?></font>
-			<input type="radio" name="toggle" id="toggle0" value="0" <?php if($fetch_page_content['toggle'] != "1") { echo "checked"; } ?>>
-			<font onclick="document.getElementById('toggle0').checked = true; return false;" style="cursor: default;"><?php echo $TEXT['NO']; ?></font>
+    	<td class="cal_left">
+    	
+    	</td>
+        <td class="cal_right">
+			<input type="hidden" name="toggle" value="0" />
+			<input type="checkbox" name="toggle" id="toggle1" value="1" <?php if($fetch_page_content['toggle'] == "1") { echo "checked"; } ?> />
+			&nbsp;<label for="toggle1"><?php echo $MOD_CONCERT['TOGGLE']; ?><label>
+			
         </td>
     </tr>
 	<tr>
-		<td class="setting_name" width="100">
+		<td class="cal_left">
 			<?php echo $MOD_CONCERT['CCHEADER']; ?> :
 		</td>
-		<td class="setting_name">
+		<td class="cal_right">
 			<textarea name="ccheader" style="width: 98%; height: 40px;"><?php echo $ccheader; ?></textarea>
 		</td>
 	</tr>
     <tr>
-		<td class="setting_name" width="100">
+		<td class="cal_left">
 			<?php echo $MOD_CONCERT['CCLOOP']; ?> :
 		</td>
-		<td class="setting_name">
+		<td class="cal_right">
 			<textarea name="ccloop" style="width: 98%; height: 40px;"><?php echo $ccloop; ?></textarea>
 			<?php echo $MOD_CONCERT['TO_USE']; ?>: [NAME], [DATE], [HEAD], [PLACE], [CLUB], [TIME], [PRICE], [INFO]
 		</td>
 	</tr>
 	<tr>
-		<td class="setting_name" width="100">
+		<td class="cal_left">
 			<?php echo $MOD_CONCERT['CCFOOTER']; ?> :
 		</td>
-		<td class="setting_name">
+		<td class="cal_right">
 			<textarea name="ccfooter" style="width: 98%; height: 40px;"><?php echo $ccfooter; ?></textarea>
 		</td>
 	</tr>
@@ -186,13 +186,14 @@ if(function_exists('edit_module_css')) {
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<td align="left">
-			<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;"></form>
+			<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;">
 		</td>
 		<td align="right">
 			<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
 		</td>
 	</tr>
 </table>
+</form>
 
 <?php
 

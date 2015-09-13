@@ -24,3 +24,20 @@ input.mod_event_edit_css {
 	margin-bottom: 5px;
 	width: 110px;
 }
+
+table.cal {
+	background-color: #DDDDDD;
+	margin: 5px;
+	width: 100%;
+}
+
+td.cal_left, td.cal_right {
+	padding-left: 10px;
+}
+
+td.cal_left {
+	width: 170px;
+	text-align: right;
+	vertical-align: top;
+	padding-top: 7px;
+}
