@@ -72,6 +72,7 @@ $today = date('Y-m-d');
 
 // Functions--------------------
 function switch_date($date, $dateview) {
+	$altdate = "";
 	if ($date != '') {
 		list($a2year, $a2month, $a2day) = explode('-', $date);
 				$ydash="-";
