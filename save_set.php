@@ -35,7 +35,7 @@ require(LEPTON_PATH.'/modules/admin.php');
 
 // Include admin wrapper script
 $update_when_modified = true; // Tells script to update when this page was last updated
-error_reporting(E_ALL);
+error_reporting(-1);
 // This code removes any php tags
 $header_data = addslashes($_POST['ccheader']);
 $footer_data = addslashes($_POST['ccfooter']);
