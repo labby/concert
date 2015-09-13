@@ -1,0 +1,53 @@
+/**
+ *  @module         concert calendar
+ *  @version        see info.php of this module
+ *  @author         Bennie Wijs and others
+ *  @copyright      2009-2015 Bennie Wijs and others
+ *  @license        GNU General Public License
+ *  @license terms  see info.php of this module
+ *  @platform       see info.php of this module
+ * 
+ */
+
+div#concert-calendar {
+	width: 95%;
+}
+
+div#concert-calendar .heder_data {
+}
+
+div#concert-calendar .header_data  h1 {
+	margin-bottom: 10px;
+}
+div#concert-calendar .concertborder {
+	border: 0;
+	border-color: #C0C0C0;
+	margin-bottom: 30px;
+}
+div#concert-calendar .concertheading {
+    background-color: #CCCCCC;
+    color: #333333;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 2px;
+}
+div#concert-calendar .concert  {
+	padding: 2px;
+}
+
+div#concert-calendar .footer_data {
+text-align: center;
+}
+
+div#concert-calendar .desc {
+}
+
+div#concert-calendar  A.toggle {
+color: #000;
+text-decoration:none;
+border-bottom: 1px dotted #fff;
+outline: none;
+cursor:pointer;
+}
+
+		
