@@ -35,8 +35,8 @@ if (defined('LEPTON_PATH')) {
 // Include admin wrapper script
 require(LEPTON_PATH.'/modules/admin.php');
 
-// include core functions of WB 2.7 to edit the optional module CSS files (frontend.css, backend.css)
-@include_once(LEPTON_PATH .'/framework/module.functions.php');
+// include core functions to edit the optional module CSS files (frontend.css, backend.css)
+include_once(LEPTON_PATH .'/framework/summary.module_edit_css.php');
 
 // check if module language file exists for the language set by the user (e.g. DE, EN)
 if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
