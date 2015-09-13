@@ -30,38 +30,32 @@ if (defined('LEPTON_PATH')) {
 }
 // end include class.secure.php
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(LEPTON_PATH .'/modules/concert/languages/EN.php');
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
-}
-
-// check if frontend.css file needs to be included into the <body></body> of view.php
-if((!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(LEPTON_PATH .'/modules/concert/frontend.css')) {
-   echo '<style type="text/css">';
-   include(LEPTON_PATH .'/modules/concert/frontend.css');
-   echo "\n</style>\n";
-}
+/** ******************
+ *	Load Language file
+ */
+$lang = (dirname(__FILE__))."/languages/". LANGUAGE .".php";
+require_once ( !file_exists($lang) ? (dirname(__FILE__))."/languages/EN.php" : $lang );
 
 // Get settings
-$query = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_settings WHERE section_id = '$section_id'");
-if( $query->numRows() > 0 ) {
-	$fetch_content = $query->fetchRow( MYSQL_ASSOC );;
-	$header_data = stripslashes($fetch_content['header_data']);
-	$footer_data = stripslashes($fetch_content['footer_data']);
-	$ccloop = stripslashes($fetch_content['ccloop']);
-	$detailed_view = $fetch_content['detailed_view'];
-	$upcoming_view = $fetch_content['upcoming_view'];
-	$previous_view = $fetch_content['previous_view'];
-	$previous_num = stripslashes($fetch_content['previous_num']);
-	$upcoming_num = stripslashes($fetch_content['upcoming_num']);
-	$dateview = $fetch_content['dateview'];
-	$date_link = $fetch_content['date_link'];
-	$toggle = $fetch_content['toggle'];
-}
+$fetch_content = array();
+$database->execute_query(
+	"SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '".$section_id."'",
+	true,
+	$fetch_content,
+	false
+);
+
+$header_data = stripslashes($fetch_content['header_data']);
+$footer_data = stripslashes($fetch_content['footer_data']);
+$ccloop = stripslashes($fetch_content['ccloop']);
+$detailed_view = $fetch_content['detailed_view'];
+$upcoming_view = $fetch_content['upcoming_view'];
+$previous_view = $fetch_content['previous_view'];
+$previous_num = stripslashes($fetch_content['previous_num']);
+$upcoming_num = stripslashes($fetch_content['upcoming_num']);
+$dateview = $fetch_content['dateview'];
+$date_link = $fetch_content['date_link'];
+$toggle = $fetch_content['toggle'];
 
 if (isset($_GET['date'])) {
 	$date = $_GET['date'];
@@ -108,8 +102,6 @@ function output($data, $dateview, $MOD_CONCERT, $date_link, $ccloop, $toggle) {
 	return $content;
 }
 
-
-
 echo '<div id="concert-calendar">';
 echo '<div class="header_data">';
 if ($header_data != "" ) {
@@ -146,7 +138,7 @@ if (isset($date) && $date == 'all') { // call for archive
 		$query_dates_archive = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date < '$today' ORDER BY concert_date DESC LIMIT 200");
 		$num_rows_archive = $query_dates_archive->numRows();
 		if ($num_rows_archive > 0) {
-			while($result_archive = $query_dates_archive->fetchRow( MYSQLASSOC)) { 
+			while($result_archive = $query_dates_archive->fetchRow( MYSQL_ASSOC)) { 
 				echo output($result_archive, $dateview, $MOD_CONCERT, $date_link, $ccloop, $toggle);
 			}
 		} else {
