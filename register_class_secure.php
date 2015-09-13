@@ -23,7 +23,7 @@ $files_to_register = array(
 	$base.'delete_concert.php',	
 	$base.'modify.php',
 	$base.'modify_settings.php',
-	$base.'save_concerts.php',
+	$base.'save_concert.php',
 	$base.'save_set.php'
 );
 

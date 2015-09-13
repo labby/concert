@@ -83,20 +83,37 @@ function switch_date($date, $dateview) {
 }
 
 function output($data, $dateview, $MOD_CONCERT, $date_link, $ccloop, $toggle) {
-	$search = array('[HEAD]','[PLACE]', '[CLUB]', '[TIME]', '[PRICE]', '[NAME]', '[DATE]', '[INFO]');
-	$replace = array($data['concert_head'],$data['concert_place'], $data['concert_club'], $data['concert_time'], $data['concert_price'], $data['concert_name'], switch_date($data['concert_date'], $dateview), $data['concert_desc']);
+	
 	$content = "";
-	if ($date_link == 1) {$content .= '<i><a href="?date='.$data['concert_date'].'">' . switch_date($data['concert_date'], $dateview) . '</a></i>';}
-	else {$content .= '<i>'.switch_date($data['concert_date'], $dateview).'</i>';}
+
+	if ($date_link == 1) {
+		$content .= '<i><a href="?date='.$data['concert_date'].'">' . switch_date($data['concert_date'], $dateview) . '</a></i>';
+	} else {
+		$content .= '<i>'.switch_date($data['concert_date'], $dateview).'</i>';
+	}
 	$content .= "&nbsp;&nbsp;";
 	$divtxt = '"cc'.$data['concert_id'].'"';
+	
 	if ($toggle == 1) {
 		$content .= " <a class='toggle' onclick='toggle_visibility(".$divtxt.");'>".$data['concert_name']."</a>";
 	} else {
 		$content .= $data['concert_name'];
 	}
 	$content .= "<div class='desc' id='cc".$data['concert_id']."' style='display:none;'>";
-	$content .= str_replace($search, $replace, $ccloop);
+	
+	$opcodes = array(
+		'[HEAD]'	=> $data['concert_head'],
+		'[PLACE]'	=> $data['concert_place'],
+		'[CLUB]'	=> $data['concert_club'],
+		'[TIME]'	=> $data['concert_time'],
+		'[PRICE]'	=> $data['concert_price'],
+		'[NAME]'	=> $data['concert_name'],
+		'[DATE]'	=> switch_date($data['concert_date'], $dateview),
+		'[INFO]'	=> $data['concert_desc']
+	);
+	$content .= str_replace(array_keys($opcodes), array_values($opcodes), $ccloop);
+	
+	
 	$content .= "</div>\n";
 	$content .= "<br />\n";
 	return $content;
