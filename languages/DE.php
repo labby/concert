@@ -30,20 +30,20 @@ if (defined('LEPTON_PATH')) {
 }
 // end include class.secure.php
 
-$module_description = 'Mit diesem Modul k&ouml;nnen Sie einen einfachen Konzertkalender in ihre Seite integrieren.';
+$module_description = 'Mit diesem Modul können Sie einen einfachen Konzertkalender in ihre Seite integrieren.';
 
 
 // Other text
-$MOD_CONCERT['ARCHIVE'] = '&nbsp Archiv &nbsp';
-$MOD_CONCERT['BACK'] = 'Zur&uuml;ck';
-$MOD_CONCERT['ARCHIVE_EMPTY'] = 'Keine Eintr&auml;ge im Archiv';
+$MOD_CONCERT['ARCHIVE'] = 'Archiv';
+$MOD_CONCERT['BACK'] = 'Zurück';
+$MOD_CONCERT['ARCHIVE_EMPTY'] = 'Keine Einträge im Archiv';
 $MOD_CONCERT['DETAILED_VIEW'] = 'Spiel-Details vom';
-$MOD_CONCERT['BACK_TO_CURRENT'] = '&nbsp Zum n&auml;chsten anstehenden Spiel &nbsp';
+$MOD_CONCERT['BACK_TO_CURRENT'] = 'Zum n&auml;chsten anstehenden Spiel';
 $MOD_CONCERT['NO_ENTRY'] = 'Kein Eintrag';
 $MOD_CONCERT['UPCOMING_CONCERTS'] = 'Anstehende Spiele';
-$MOD_CONCERT['PREVIOUS_CONCERTS'] = 'Fr&uuml;here Spiele';
-$MOD_CONCERT['NEXTCONCERT'] = 'N&auml;chster Termin ist am';
-$MOD_CONCERT['NOTHING_ARRANGED'] = 'Nichts ist geplant';
+$MOD_CONCERT['PREVIOUS_CONCERTS'] = 'Frühere Spiele';
+$MOD_CONCERT['NEXTCONCERT'] = 'Nächster Termin ist am';
+$MOD_CONCERT['NOTHING_ARRANGED'] = 'Nichts geplant';
 
 // Admin
 $MOD_CONCERT['CONCERT'] = 'Termin im';
@@ -60,16 +60,16 @@ $MOD_CONCERT['YEAR'] = 'Jahr';
 $MOD_CONCERT['CONCERTS'] = 'Spiele';
 $MOD_CONCERT['SETTINGS'] = 'Spielkalender Einstellungen';
 $MOD_CONCERT['CCHEADER'] = 'Kopfzeile';
-$MOD_CONCERT['CCFOOTER'] = 'Fu&szlig;zeile';
+$MOD_CONCERT['CCFOOTER'] = 'Fußzeile';
 $MOD_CONCERT['CCLOOP'] = 'Inhalt-Schleife';
-$MOD_CONCERT['TO_USE'] = 'M&ouml;gliche Platzhalter';
+$MOD_CONCERT['TO_USE'] = 'Mögliche Platzhalter';
 $MOD_CONCERT['DISPDETAILEDVIEW'] = 'Spiele detailiert anzeigen';
 $MOD_CONCERT['DISPUPCOMINGVIEW'] = 'Anstehende Spiele anzeigen';
-$MOD_CONCERT['DISPPREVIOUSVIEW'] = 'Fr&uuml;here Spiele anzeigen';
+$MOD_CONCERT['DISPPREVIOUSVIEW'] = 'Frühere Spiele anzeigen';
 $MOD_CONCERT['UPCOMINGNUM'] = 'Anzahl anstehender Spiele zeigen';
-$MOD_CONCERT['PREVIOUSNUM'] = 'Anzahl fr&uuml;here Spiele zeigen';
+$MOD_CONCERT['PREVIOUSNUM'] = 'Anzahl frühere Spiele zeigen';
 $MOD_CONCERT['ENTERCONCERT_LONGDESC'] = 'Beschreibung eingeben';
-$MOD_CONCERT['ADDCONCERT'] = 'Spiel hinzuf&uuml;gen';
+$MOD_CONCERT['ADDCONCERT'] = 'Spiel hinzufügen';
 $MOD_CONCERT['LINKDATE'] = 'Datum verlinken';
 $MOD_CONCERT['TOGGLE'] = '"Ausklapp"-funktion';
 //----------------------------
