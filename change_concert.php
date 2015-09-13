@@ -1,41 +1,48 @@
 <?php
 
-/*
+/**
+ *  @module         concert calendar
+ *  @version        see info.php of this module
+ *  @author         Bennie Wijs and others
+ *  @copyright      2009-2015 Bennie Wijs and others
+ *  @license        GNU General Public License
+ *  @license terms  see info.php of this module
+ *  @platform       see info.php of this module
+ * 
+ */
+ 
+// include class.secure.php to protect this file and the whole CMS!
+if (defined('LEPTON_PATH')) {	
+	include(LEPTON_PATH.'/framework/class.secure.php'); 
+} else {
+	$oneback = "../";
+	$root = $oneback;
+	$level = 1;
+	while (($level < 10) && (!file_exists($root.'/framework/class.secure.php'))) {
+		$root .= $oneback;
+		$level += 1;
+	}
+	if (file_exists($root.'/framework/class.secure.php')) { 
+		include($root.'/framework/class.secure.php'); 
+	} else {
+		trigger_error(sprintf("[ <b>%s</b> ] Can't include class.secure.php!", $_SERVER['SCRIPT_NAME']), E_USER_ERROR);
+	}
+}
+// end include class.secure.php
 
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2008, Ryan Djurovich
+//require('../../config.php');
 
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
-
-require('../../config.php');
-
-// Include WB admin wrapper script
-require(WB_PATH.'/modules/admin.php');
+// Include admin wrapper script
+require(LEPTON_PATH.'/modules/admin.php');
 
 // check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
+if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
 	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(WB_PATH .'/modules/concert/languages/EN.php');
+	require_once(LEPTON_PATH .'/modules/concert/languages/EN.php');
 } else {
 	// a module language file exists for the language defined by the user, load it
-	require_once(WB_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
+	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
 }
-
-
 
 // Get Settings from database
 $query_page_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '$section_id'");
@@ -49,12 +56,12 @@ if (isset($_GET['concert_id'])){
 $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `concert_id` = '$concert_id'");
 $fetch_content = $query_content->fetchRow();
 $this_date = $fetch_content['concert_date'];
-list($year, $month, $day) = split('-', $this_date);
+list($year, $month, $day) = explode('-', $this_date);
 
 ?>
 <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$MOD_CONCERT['CONCERT']; ?></h2>
 
-<form name="modify" action="<?php echo WB_URL; ?>/modules/concert/save_concert.php" method="post" style="margin: 0;">
+<form name="modify" action="<?php echo LEPTON_URL; ?>/modules/concert/save_concert.php" method="post" style="margin: 0;">
 <input type="hidden" name="section_id" value="<?php echo $section_id; ?>">
 <input type="hidden" name="page_id" value="<?php echo $page_id; ?>">
 <input type="hidden" name="concert_id" value="<?php echo $concert_id; ?>">
@@ -69,7 +76,7 @@ $concert_time = $fetch_content['concert_time'];
 $concert_price = $fetch_content['concert_price'];
 $concert_desc = $fetch_content['concert_desc'];
 
-list($year, $month, $day) = split('[/.-]', $concert_date);
+list($year, $month, $day) = explode('-', $concert_date);
 
 ?>
 
@@ -301,13 +308,13 @@ function setDays() {
 		<td>
 		<?php
 			$content = stripslashes(htmlspecialchars($fetch_content['concert_desc']));
-			if (!defined('WYSIWYG_EDITOR') OR WYSIWYG_EDITOR=="none" OR !file_exists(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php')) {
+			if (!defined('WYSIWYG_EDITOR') OR WYSIWYG_EDITOR=="none" OR !file_exists(LEPTON_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php')) {
 				function show_wysiwyg_editor($name,$id,$content,$width,$height) {
 					echo '<textarea name="'.$name.'" id="'.$id.'" style="width: '.$width.'; height: '.$height.';">'.$content.'</textarea>';
 				}
 			} else {
 				$id_list=array("concert_desc");
-				require(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
+				require(LEPTON_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
 			}
 			show_wysiwyg_editor("concert_desc","concert_desc",$content,"100%","400px");
 		?>

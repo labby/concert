@@ -1,50 +1,55 @@
 <?php
 
-/*
-
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2008, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
-
-// prevent this file from being accessed directly
-//error_reporting(E_ALL);
-if(!defined('WB_PATH')) die(header('Location: index.php'));
+/**
+ *  @module         concert calendar
+ *  @version        see info.php of this module
+ *  @author         Bennie Wijs and others
+ *  @copyright      2009-2015 Bennie Wijs and others
+ *  @license        GNU General Public License
+ *  @license terms  see info.php of this module
+ *  @platform       see info.php of this module
+ * 
+ */
+ 
+// include class.secure.php to protect this file and the whole CMS!
+if (defined('LEPTON_PATH')) {	
+	include(LEPTON_PATH.'/framework/class.secure.php'); 
+} else {
+	$oneback = "../";
+	$root = $oneback;
+	$level = 1;
+	while (($level < 10) && (!file_exists($root.'/framework/class.secure.php'))) {
+		$root .= $oneback;
+		$level += 1;
+	}
+	if (file_exists($root.'/framework/class.secure.php')) { 
+		include($root.'/framework/class.secure.php'); 
+	} else {
+		trigger_error(sprintf("[ <b>%s</b> ] Can't include class.secure.php!", $_SERVER['SCRIPT_NAME']), E_USER_ERROR);
+	}
+}
+// end include class.secure.php
 
 // check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
+if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
 	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(WB_PATH .'/modules/concert/languages/EN.php');
+	require_once(LEPTON_PATH .'/modules/concert/languages/EN.php');
 } else {
 	// a module language file exists for the language defined by the user, load it
-	require_once(WB_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
+	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
 }
 
 // check if frontend.css file needs to be included into the <body></body> of view.php
-if((!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(WB_PATH .'/modules/concert/frontend.css')) {
+if((!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(LEPTON_PATH .'/modules/concert/frontend.css')) {
    echo '<style type="text/css">';
-   include(WB_PATH .'/modules/concert/frontend.css');
+   include(LEPTON_PATH .'/modules/concert/frontend.css');
    echo "\n</style>\n";
 }
 
 // Get settings
-$query = mysql_query("SELECT * FROM ".TABLE_PREFIX."mod_concert_settings WHERE section_id = '$section_id'");
-if( mysql_num_rows($query) > 0) {
-	$fetch_content = mysql_fetch_assoc($query);
+$query = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_settings WHERE section_id = '$section_id'");
+if( $query->numRows() > 0 ) {
+	$fetch_content = $query->fetchRow( MYSQL_ASSOC );;
 	$header_data = stripslashes($fetch_content['header_data']);
 	$footer_data = stripslashes($fetch_content['footer_data']);
 	$ccloop = stripslashes($fetch_content['ccloop']);
@@ -68,7 +73,7 @@ $today = date('Y-m-d');
 // Functions--------------------
 function switch_date($date, $dateview) {
 	if ($date != '') {
-		list($a2year, $a2month, $a2day) = split('[/.-]', $date);
+		list($a2year, $a2month, $a2day) = explode('-', $date);
 				$ydash="-";
 		$ydot=".";
 			if ($dateview == 1 ) { 
@@ -137,10 +142,10 @@ if (isset($date) && $date == 'all') { // call for archive
 	</div>
     <div class="concert">
 	<?php
-		$query_dates_archive = mysql_query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date < '$today' ORDER BY concert_date DESC LIMIT 200");
-		$num_rows_archive = mysql_num_rows($query_dates_archive);
+		$query_dates_archive = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date < '$today' ORDER BY concert_date DESC LIMIT 200");
+		$num_rows_archive = $query_dates_archive->numRows();
 		if ($num_rows_archive > 0) {
-			while($result_archive = mysql_fetch_assoc($query_dates_archive)) { 
+			while($result_archive = $query_dates_archive->fetchRow( MYSQLASSOC)) { 
 				echo output($result_archive, $dateview, $MOD_CONCERT, $date_link, $ccloop, $toggle);
 			}
 		} else {
@@ -159,8 +164,8 @@ if (isset($date) && $date == 'all') { // call for archive
 <?php if ($detailed_view == 1 ){ 
 $date_link2 = true;
 if (!isset($date)) {
-	$query_new_date = mysql_query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date >= '$today' ORDER BY concert_date ASC LIMIT 1");
-	$result_new_date = mysql_fetch_assoc($query_new_date);
+	$query_new_date = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date >= '$today' ORDER BY concert_date ASC LIMIT 1");
+	$result_new_date = $query_new_date->fetchRow( MYSQL_ASSOC );
 	$date = $result_new_date['concert_date'];
 	$date_link2 = false;
 }
@@ -181,11 +186,11 @@ if (!isset($date)) {
 	</div>
     <div class="concert">
 	<?php
-		$query_dates = mysql_query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date = '$date'");
-		$num_rows = mysql_num_rows($query_dates);
+		$query_dates = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date = '$date'");
+		$num_rows = $query_dates->numRows();
 		$i = 0;
 		if ($num_rows > 0) {
-			while($result = mysql_fetch_assoc($query_dates)) {
+			while($result = $query_dates->fetchRow( MYSQL_ASSOC )) {
 				$i++;
 				echo '<b>' . $result['concert_head'] . '</b><br /><b>' . $result['concert_name'] . '</b><br />';
 				$search = array('[HEAD]','[PLACE]', '[CLUB]', '[TIME]', '[PRICE]', '[NAME]', '[DATE]', '[INFO]');
@@ -215,10 +220,10 @@ if (!isset($date)) {
 	</div>
     <div class="concert">
 	<?php
-		$query_dates_upcoming = mysql_query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date >= '$today' ORDER BY concert_date LIMIT $upcoming_num");
-		$num_rows_upcoming = mysql_num_rows($query_dates_upcoming);
+		$query_dates_upcoming = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date >= '$today' ORDER BY concert_date LIMIT $upcoming_num");
+		$num_rows_upcoming = $query_dates_upcoming->numRows();
 		if ($num_rows_upcoming > 0) {
-			while($result_upcoming = mysql_fetch_assoc($query_dates_upcoming)) { 
+			while($result_upcoming = $query_dates_upcoming->fetchRow( MYSQL_ASSOC)) { 
 				echo output($result_upcoming, $dateview, $MOD_CONCERT,$date_link, $ccloop, $toggle);
 			}
 		} else {
@@ -241,10 +246,10 @@ if (!isset($date)) {
 	</div>
     <div class="concert">
 	<?php
-		$query_dates_previous = mysql_query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date < '$today' ORDER BY concert_date DESC LIMIT $previous_num");
-		$num_rows_previous = mysql_num_rows($query_dates_previous);
+		$query_dates_previous = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_concert_dates WHERE section_id = '$section_id' && concert_date < '$today' ORDER BY concert_date DESC LIMIT $previous_num");
+		$num_rows_previous = $query_dates_previous->numRows();
 		if ($num_rows_previous > 0) {
-			while($result_previous = mysql_fetch_assoc($query_dates_previous)) {
+			while($result_previous = $query_dates_previous->fetchRow( MYSQL_ASSOC )) {
 				echo output($result_previous, $dateview, $MOD_CONCERT, $date_link, $ccloop, $toggle);
 			}
 		} else {
