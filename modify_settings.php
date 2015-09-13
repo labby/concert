@@ -55,7 +55,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(LEPTON_PAT
 }
 
 $query_page_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '$section_id'");
-$fetch_page_content = $query_page_content->fetchRow();
+$fetch_page_content = $query_page_content->fetchRow( MYSQL_ASSOC );
 
 $ccheader = stripslashes($fetch_page_content['header_data']);
 $ccfooter = stripslashes($fetch_page_content['footer_data']);
