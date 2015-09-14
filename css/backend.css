@@ -41,3 +41,41 @@ td.cal_left {
 	vertical-align: top;
 	padding-top: 7px;
 }
+
+table.concert_list_head {
+	width: 100% !important;
+	margin-top: 10px;
+	margin-bottom: 12px;
+}
+
+table.concert_list_head td:first-child {
+	text-align: left;
+}
+table.concert_list_head td {
+	text-align: right;
+}
+table.concert_list_head input[type="button"] {
+	width: 50%;
+}
+
+table.concert_list {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.concert_list tr.row_1 {
+	background-color: #DDDDDD;
+}
+.concert_list tr.row_0 {
+	background-color: #EEEEEE;
+}
+
+table.concert_list td {
+	padding-left: 10px;
+}
+
+table.concert_list td:first-child,
+table.concert_list td:last-child {
+	padding-left: 0px;
+	text-align: center;
+}

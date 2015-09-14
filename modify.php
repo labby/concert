@@ -39,92 +39,52 @@ if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
 	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
 }
 
-//removes empty events from the table so they will not be displayed
+/** ******************
+ *	Load Language file
+ */
+$lang = (dirname(__FILE__))."/languages/". LANGUAGE .".php";
+require_once ( !file_exists($lang) ? (dirname(__FILE__))."/languages/EN.php" : $lang );
+
+/**	*******************************
+ *	Try to get the template-engine.
+ */
+global $parser, $loader;
+require( dirname(__FILE__)."/register_parser.php" );
+
+// removes empty events from the table so they will not be displayed
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `concert_desc`=''");
 
-$query_page_content = $database->query("SELECT * FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$page_id'");
-$fetch_page_content = $query_page_content->fetchRow();
-$page_created = $fetch_page_content['link'];
+$fetch_page_content = array();
 
-$query_page_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '$section_id'");
-$fetch_page_content = $query_page_content->fetchRow();
+$database->execute_query(
+	"SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '".$section_id."'",
+	true,
+	$fetch_page_content,
+	false
+);
+
 $dateview = $fetch_page_content['dateview'];
 
+$concerts = array();
+$database->execute_query(
+	"SELECT * FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `section_id` = '".$section_id."' ORDER BY `concert_date`",
+	true,
+	$concerts
+
+);
+$page_values = array(
+	'concerts'		=> $concerts, 
+	'MOD_CONCERT'	=> $MOD_CONCERT,
+	'LEPTON_URL'	=> LEPTON_URL,
+	'THEME_URL'		=> THEME_URL,
+	'page_id'		=> $page_id,
+	'section_id'	=> $section_id,
+	'TEXT'			=> $TEXT
+);
+
+echo $parser->render(
+	$twig_modul_namespace.'modify.lte',
+	$page_values
+);
+
 ?>
-
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-<tr>
-	<td align="left" width="50%">
-		<input type="button" value="<?php echo $MOD_CONCERT['ADDCONCERT']; ?>" onclick="javascript: window.location = '<?php echo LEPTON_URL; ?>/modules/concert/add_concert.php?page_id=<?php echo $page_id; ?>&section_id=<?php echo $section_id; ?>';" style="width: 100%;" />
-	</td>
-	<td align="right" width="50%">
-		<input type="button" value="<?php echo $TEXT['SETTINGS']; ?>" onclick="javascript: window.location = '<?php echo LEPTON_URL; ?>/modules/concert/modify_settings.php?page_id=<?php echo $page_id; ?>&section_id=<?php echo $section_id; ?>';" style="width: 100%;" />
-	</td>
-</tr>
-</table>
-
-<br />
-
-<h2><?php echo $MOD_CONCERT['CONCERTS'] ?></h2>
-<?php
-
-$query_dates = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `section_id` = '$section_id' ORDER BY concert_date");
-if ($query_dates->numRows() > 0) {
-	$row = 'a';
-	?>
-	<table cellpadding="2" cellspacing="0" border="0" width="100%">
-	<?php
-	while( $result = $query_dates->fetchRow() ) {
-		$alt2date=$result['concert_date'];
-		
-		list($a2year, $a2month, $a2day) = explode('-', $alt2date);
-		
-		$ydash="-";
-		$ydot=".";
-		if ($a2year=="2000"){
-			$a2year="";
-			$alt2date=substr($alt2date,5,5);
-			$ydash="";
-			$ydot="";
-		}
-		if ($dateview == 1 ) { 
-			$altdate=$a2day.".".$a2month.$ydot.$a2year;
-		} elseif ($dateview == 2 ) { 
-			$altdate=$a2month."-".$a2day.$ydash.$a2year;
-		} else {
-			$altdate=$alt2date;
-		}
-		?>
-		<tr class="row_<?php echo $row; ?>" height="20">
-			<td align="left" style="padding-left: 5px;">
-				<a href="<?php echo LEPTON_URL; ?>/modules/concert/change_concert.php?page_id=<?php echo $page_id; ?>&section_id=<?php echo $section_id; ?>&concert_id=<?php echo $result['concert_id']; ?>" title="<?php echo $TEXT['MODIFY']; ?>"><img src="<?php echo THEME_URL; ?>/images/modify_16.png" border="0" alt="<?php echo $TEXT['MODIFY']; ?>" /></a>
-			</td>	
-			<td align="left" style="padding-left: 5px;">
-				<?php echo $altdate ?>
-			</td>
-			<td align="left" style="padding-left: 5px;">	
-				<?php echo $result['concert_head']  ?>
-			</td>      
-			<td align="left" style="padding-left: 5px;">	
-				<?php echo $result['concert_name']  ?>
-			</td>
-			<td align="left" style="padding-left: 5px;">
-				<?php echo $result['concert_club'];	?>
-			</td>
-			<td align="right" style="padding-right: 5px; padding-left: 5px;" >
-				<a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo LEPTON_URL; ?>/modules/concert/delete_concert.php?page_id=<?php echo $page_id; ?>&section_id=<?php echo $section_id; ?>&concert_id=<?php echo $result['concert_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>"><img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="<?php echo $TEXT['DELETE']; ?>" /></a>
-			</td>
-		</tr>
-		<?php
-		// Alternate row color
-		if($row == 'a') {
-			$row = 'b';
-		} else {
-			$row = 'a';
-		}
-	} 
-} else {
-	echo $TEXT['NONE_FOUND'];
-}
-?>
-</table>
