@@ -1,0 +1,39 @@
+{% autoescape false %}
+<table class="concert_list_head">
+<tr>
+	<td>
+		<input type="button" value="{{ MOD_CONCERT.ADDCONCERT }}" onclick="javascript: window.location = '{{ LEPTON_URL }}/modules/concert/add_concert.php?page_id={{ page_id }}&section_id={{ section_id }}';" />
+	</td>
+	<td>
+		<input type="button" value="{{ TEXT.SETTINGS }}" onclick="javascript: window.location = '{{ LEPTON_URL }}/modules/concert/modify_settings.php?page_id={{ page_id }}&section_id{{ section_id }}';" />
+	</td>
+</tr>
+</table>
+
+<h2>{{ MOD_CONCERT.CONCERTS }}</h2>
+
+<table class="concert_list">
+{% for item in concerts %}
+		<tr class="row_{{ (loop.index % 2) }}">
+			<td>
+				<a href="{{ LEPTON_URL }}/modules/concert/change_concert.php?page_id={{ page_id }}&section_id={{ section_id }}&concert_id={{ item.concert_id }}" title="{{ TEXT.MODIFY }}" ><img src="{{ THEME_URL }}/images/modify_16.png" alt="{{ TEXT.MODIFY }}" /></a>
+			</td>	
+			<td align="left" style="padding-left: 5px;">
+				{{ item.concert_date }}
+			</td>
+			<td>	
+				{{ item.concert_head }}
+			</td>      
+			<td>	
+				{{ item.concert_name }}
+			</td>
+			<td>
+				{{ item.concert_club }}
+			</td>
+			<td>
+				<a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE }}', '{{ LEPTON_URL }}/modules/concert/delete_concert.php?page_id={{ page_id }}&section_id={{ section_id }}&concert_id={{ item.concert_id }}');" title="{{ TEXT.DELETE }}"><img src="{{ THEME_URL }}/images/delete_16.png" border="0" alt="{{ TEXT.DELETE }}" /></a>
+			</td>
+		</tr>
+{% endfor %}
+</table>
+{% endautoescape %}
