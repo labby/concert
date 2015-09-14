@@ -33,7 +33,7 @@ if (defined('LEPTON_PATH')) {
 $module_directory	= 'concert';
 $module_name		= 'Concert Calendar';
 $module_function	= 'page';
-$module_version		= '2.2.3.0';
+$module_version		= '2.2.4.0';
 $module_platform	= '2.x';
 $module_author		= 'Bennie Wijs and others';
 $module_license		= 'GNU General Public License';
