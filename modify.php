@@ -30,15 +30,6 @@ if (defined('LEPTON_PATH')) {
 }
 // end include class.secure.php
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(LEPTON_PATH .'/modules/concert/languages/EN.php');
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
-}
-
 /** ******************
  *	Load Language file
  */
