@@ -37,7 +37,6 @@ $footer_data = addslashes('Footer');
 //default loop
 $ccloop = addslashes('[HEAD] In [PLACE] ([CLUB]) at [TIME] for [PRICE].');
 
-
 $database->query("INSERT INTO `".TABLE_PREFIX."mod_concert_settings` (`page_id`, `section_id`, `header_data`, `footer_data`, `ccloop`, `detailed_view`, `upcoming_view`, `previous_view`, `previous_num`, `upcoming_num`, `dateview`, `date_link`, `toggle`) VALUES ('$page_id','$section_id','$header_data','$footer_data','$ccloop','1','1','1','10','10','0','0','1')");
 
 ?>
