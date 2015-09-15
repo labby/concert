@@ -30,29 +30,17 @@ if (defined('LEPTON_PATH')) {
 }
 // end include class.secure.php
 
-//require('../../config.php');
-
 // Include admin wrapper script
 require(LEPTON_PATH.'/modules/admin.php');
 
 // include core functions to edit the optional module CSS files (frontend.css, backend.css)
 include_once(LEPTON_PATH .'/framework/summary.module_edit_css.php');
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(LEPTON_PATH .'/modules/concert/languages/EN.php');
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
-}
-
-// check if backend.css file needs to be included into the <body></body> of modify.php
-if(!method_exists($admin, 'register_backend_modfiles') && file_exists(LEPTON_PATH ."/modules/concert/backend.css")) {
-	echo '<style type="text/css">';
-	include(LEPTON_PATH .'/modules/concert/backend.css');
-	echo "\n</style>\n";
-}
+/** ******************
+ *	Load Language file
+ */
+$lang = (dirname(__FILE__))."/languages/". LANGUAGE .".php";
+require_once ( !file_exists($lang) ? (dirname(__FILE__))."/languages/EN.php" : $lang );
 
 $query_page_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '$section_id'");
 $fetch_page_content = $query_page_content->fetchRow( MYSQL_ASSOC );
@@ -60,6 +48,7 @@ $fetch_page_content = $query_page_content->fetchRow( MYSQL_ASSOC );
 $ccheader = stripslashes($fetch_page_content['header_data']);
 $ccfooter = stripslashes($fetch_page_content['footer_data']);
 $ccloop = stripslashes($fetch_page_content['ccloop']);
+
 ?>
 
 <h2><?php echo $MOD_CONCERT['SETTINGS']; ?></h2>

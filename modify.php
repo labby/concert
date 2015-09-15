@@ -45,17 +45,6 @@ require( dirname(__FILE__)."/register_parser.php" );
 // removes empty events from the table so they will not be displayed
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `page_id` = '$page_id' and `section_id` = '$section_id' and `concert_desc`=''");
 
-$fetch_page_content = array();
-
-$database->execute_query(
-	"SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '".$section_id."'",
-	true,
-	$fetch_page_content,
-	false
-);
-
-$dateview = $fetch_page_content['dateview'];
-
 $concerts = array();
 $database->execute_query(
 	"SELECT * FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `section_id` = '".$section_id."' ORDER BY `concert_date`",
