@@ -30,31 +30,39 @@ if (defined('LEPTON_PATH')) {
 }
 // end include class.secure.php
 
-//require('../../config.php');
-
 // Include admin wrapper script
 require(LEPTON_PATH.'/modules/admin.php');
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(LEPTON_PATH .'/modules/concert/languages/EN.php');
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once(LEPTON_PATH .'/modules/concert/languages/'.LANGUAGE .'.php');
-}
+/** ******************
+ *	Load Language file
+ */
+$lang = (dirname(__FILE__))."/languages/". LANGUAGE .".php";
+require_once ( !file_exists($lang) ? (dirname(__FILE__))."/languages/EN.php" : $lang );
 
 // Get Settings from database
-$query_page_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '$section_id'");
-$fetch_page_content = $query_page_content->fetchRow();
+$fetch_page_content = array();
+$database->execute_query(
+	"SELECT * FROM `".TABLE_PREFIX."mod_concert_settings` WHERE `section_id` = '$section_id'",
+	true,
+	$fetch_page_content,
+	false
+);
+
 $dateview = $fetch_page_content['dateview'];
+
 if (isset($_GET['concert_id'])){
 	$concert_id = $_GET['concert_id'];
 }
 
 // Get Data from database
-$query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `concert_id` = '$concert_id'");
-$fetch_content = $query_content->fetchRow();
+$fetch_content = array();
+$database->execute_query(
+	"SELECT * FROM `".TABLE_PREFIX."mod_concert_dates` WHERE `concert_id` = '$concert_id'",
+	true,
+	$fetch_content,
+	false
+);
+
 $this_date = $fetch_content['concert_date'];
 list($year, $month, $day) = explode('-', $this_date);
 
