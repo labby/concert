@@ -36,7 +36,7 @@ require(LEPTON_PATH.'/modules/admin.php');
 // Insert new row into database
 $concert_id = $database->get_one("SELECT LAST_INSERT_ID()");
 $date = date('Y-m-d');
-$database->query("INSERT INTO `".TABLE_PREFIX."mod_concert_dates` (`page_id`, `section_id`, `concert_id`, `concert_date`) VALUES ('$page_id','$section_id','$concert_id','$date')");
+$database->query("INSERT INTO `".TABLE_PREFIX."mod_concert_dates` (`page_id`, `section_id`, `concert_id`, `concert_date`) VALUES ('$page_id','$section_id','','$date')");
 
 //get id
 $concert_id = $database->get_one("SELECT LAST_INSERT_ID()");
